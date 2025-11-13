@@ -54,16 +54,43 @@ print(f"Jenis absen: {jenis}")
 
 # 4️⃣ Jalankan proses absen jika waktunya sesuai
 if "Absen" in jenis:
-    # Tambahkan delay acak 3–5 detik sebelum submit
+    # Delay acak sebelum submit
     delay = random.uniform(3, 5)
     print(f"Menunggu {delay:.2f} detik sebelum mengirim absen...")
     time.sleep(delay)
 
     print("👉 Menjalankan proses absen...")
-    # TODO: tambahkan logika login ke website absen kamu di sini
-    # Contoh:
-    # response = requests.post("https://url-absen", data={"user": username, "pass": password})
-    # print("Hasil:", response.status_code, response.text)
+
+    # Simulasi login dan submit absen
+    url = "https://contoh-website-absen.com/api/absen"  # ganti URL sesuai sistem kamu
+    data = {"username": username, "password": password, "jenis": jenis}
+
+    # Tambahkan retry mekanisme
+    max_retry = 3
+    for attempt in range(1, max_retry + 1):
+        try:
+            response = requests.post(url, data=data, timeout=15)
+            print(f"[Percobaan {attempt}] Status:", response.status_code)
+            
+            if response.status_code == 200:
+                print("✅ Absen berhasil terkirim!")
+                break
+            else:
+                print("⚠️ Server merespons tapi belum sukses. Coba lagi...")
+        except Exception as e:
+            print(f"❌ Gagal mengirim absen (percobaan {attempt}): {e}")
+        
+        if attempt < max_retry:
+            tunggu = random.uniform(5, 10)
+            print(f"Menunggu {tunggu:.2f} detik sebelum mencoba lagi...")
+            time.sleep(tunggu)
+    else:
+        print("❌ Gagal absen setelah beberapa percobaan.")
+
+    # Tambahkan waktu tunggu setelah submit agar proses stabil
+    tunggu_setelah = random.uniform(5, 8)
+    print(f"Menunggu {tunggu_setelah:.2f} detik untuk memastikan data tersimpan...")
+    time.sleep(tunggu_setelah)
 
 else:
     print("⏸️ Tidak perlu absen sekarang.")
