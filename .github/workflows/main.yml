@@ -2,31 +2,38 @@ name: Absen Otomatis
 
 on:
   schedule:
-    # Pagi: 06:10 WIB → 23:10 UTC (hari sebelumnya)
-    - cron: '10 23 * * *'
-    # Siang: 12:10 WIB → 05:10 UTC
-    - cron: '10 5 * * *'
-    # Sore Senin–Kamis: 16:10 WIB → 09:10 UTC
-    - cron: '10 9 * * 1-4'
-    # Sore Jumat: 16:40 WIB → 09:40 UTC
-    - cron: '40 9 * * 5'
+    # Jadwal absen WIB (GitHub pakai UTC, jadi kurangi 7 jam)
+    # 06:10 WIB = 23:10 UTC
+    # 12:10 WIB = 05:10 UTC
+    # 16:10 WIB = 09:10 UTC
+    # 16:40 WIB (Jumat) = 09:40 UTC
+    - cron: "10 23 * * 1-5"
+    - cron: "10 5 * * 1-5"
+    - cron: "10 9 * * 1-5"
+    - cron: "40 9 * * 5"
   workflow_dispatch:
 
 jobs:
-  run-script:
+  absen:
     runs-on: ubuntu-latest
     steps:
-      - name: Ambil repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
           pip install requests
+
+      - name: Delay acak sebelum menjalankan absen
+        run: |
+          DELAY=$((RANDOM % 5 + 3))
+          echo "Menunggu $DELAY detik sebelum menjalankan script..."
+          sleep $DELAY
 
       - name: Jalankan script absen
         env:
