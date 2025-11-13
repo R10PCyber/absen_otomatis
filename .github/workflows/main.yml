@@ -1,5 +1,9 @@
 name: Absen Otomatis
 
+env:
+  ABSEN_USER: ${{ secrets.ABSEN_USER }}
+  ABSEN_PASS: ${{ secrets.ABSEN_PASS }}
+
 on:
   schedule:
     # Jadwal waktu pakai UTC
