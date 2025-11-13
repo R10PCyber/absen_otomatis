@@ -24,7 +24,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
+      - name: Install dependencies
+        run: |
+          pip install requests
+      - name: Jalankan script absen
+        env:
+          ABSEN_USER: ${{ secrets.ABSEN_USER }}
+          ABSEN_PASS: ${{ secrets.ABSEN_PASS }}
+        run: python absen.py
       - name: Jalankan script absen
         env:
           ABSEN_USER: ${{ secrets.ABSEN_USER }}
