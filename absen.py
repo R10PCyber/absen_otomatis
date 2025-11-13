@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 import requests
 import os
+import time
+import random
 
 # Ambil data login dari GitHub Secrets
 username = os.environ.get("ABSEN_USER")
@@ -50,10 +52,19 @@ else:
 
 print(f"Jenis absen: {jenis}")
 
+# 4️⃣ Jalankan proses absen jika waktunya sesuai
 if "Absen" in jenis:
+    # Tambahkan delay acak 3–5 detik sebelum submit
+    delay = random.uniform(3, 5)
+    print(f"Menunggu {delay:.2f} detik sebelum mengirim absen...")
+    time.sleep(delay)
+
     print("👉 Menjalankan proses absen...")
     # TODO: tambahkan logika login ke website absen kamu di sini
-    # misalnya requests.post("https://url-absen", data={username, password})
+    # Contoh:
+    # response = requests.post("https://url-absen", data={"user": username, "pass": password})
+    # print("Hasil:", response.status_code, response.text)
+
 else:
     print("⏸️ Tidak perlu absen sekarang.")
 
