@@ -2,19 +2,19 @@ name: Absen Otomatis
 
 on:
   schedule:
-    # Jadwal absen WIB (GitHub pakai UTC → WIB = UTC+7)
+    # WIB -> UTC (WIB -7 jam)
     # 06:10 WIB = 23:10 UTC
     # 12:10 WIB = 05:10 UTC
     # 16:10 WIB = 09:10 UTC
-    # 16:40 WIB (Jumat) = 09:40 UTC
+    # Jumat sore 16:40 WIB = 09:40 UTC
     - cron: "10 23 * * 1-5"
     - cron: "10 5 * * 1-5"
     - cron: "10 9 * * 1-5"
     - cron: "40 9 * * 5"
   workflow_dispatch:
-  
+
 permissions:
-  contents: write
+  contents: write   # izinkan push hasil log ke repo
 
 jobs:
   absen:
@@ -39,29 +39,25 @@ jobs:
           echo "Menunggu $DELAY detik sebelum menjalankan script..."
           sleep $DELAY
 
-      - name: Jalankan script absen
+      - name: Jalankan script absen dan simpan log bulanan
         env:
           ABSEN_USER: ${{ secrets.ABSEN_USER }}
           ABSEN_PASS: ${{ secrets.ABSEN_PASS }}
-        run: python absen.py >> log_absen.txt 2>&1
-
-      - name: Tunggu sebentar agar log tersimpan
         run: |
-          echo "Menunggu 10 detik agar semua log tersimpan dengan aman..."
-          sleep 10
+          mkdir -p logs
+          LOG_FILE="logs/absen_$(date '+%Y-%m').txt"
+          echo "=== Absen Tanggal $(date '+%Y-%m-%d %H:%M:%S') ===" >> $LOG_FILE
+          python absen.py >> $LOG_FILE 2>&1
+          echo "----------------------------------------" >> $LOG_FILE
+          echo "Selesai pada: $(date '+%Y-%m-%d %H:%M:%S UTC')" >> $LOG_FILE
+          echo "" >> $LOG_FILE
 
-      - name: Tambahkan timestamp ke log
-        run: |
-          echo "----------------------------------------" >> log_absen.txt
-          echo "Waktu selesai (UTC): $(date -u '+%Y-%m-%d %H:%M:%S')" >> log_absen.txt
-          echo "" >> log_absen.txt
-
-      - name: Commit dan push hasil log
+      - name: Commit dan push hasil log bulanan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add log_absen.txt
-          git commit -m "🕒 Update log absen: $(date '+%Y-%m-%d %H:%M:%S')" || echo "Tidak ada perubahan untuk di-commit"
+          git add logs/
+          git commit -m "🗓️ Update log absen bulan $(date '+%Y-%m')" || echo "Tidak ada perubahan untuk di-commit"
           git push
