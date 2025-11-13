@@ -1,0 +1,24 @@
+name: Absen Otomatis
+
+on:
+  schedule:
+    # Jadwal waktu pakai UTC
+    # 0 0,4,8 * * * = jam 07.00, 11.00, 15.00 WIB
+    - cron: '0 0,4,8 * * *'
+  workflow_dispatch:  # biar bisa dijalankan manual
+  
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ambil repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Jalankan script absen
+        run: python absen.py
