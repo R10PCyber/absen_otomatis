@@ -148,3 +148,15 @@ Hari ini (2025-11-18) adalah hari libur nasional — tidak absen.
 ----------------------------------------
 Selesai pada: 2025-11-17 23:27:20 UTC
 
+=== Absen Tanggal 2025-11-18 05:33:27 ===
+/home/runner/work/absen_otomatis/absen_otomatis/absen.py:12: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  now_utc = datetime.utcnow()
+=== Menjalankan script absen otomatis ===
+Waktu sekarang (WIB): 2025-11-18 12:33:27
+Hari: Tuesday
+Username: 199511102025051001
+----------------------------------------
+Hari ini (2025-11-18) adalah hari libur nasional — tidak absen.
+----------------------------------------
+Selesai pada: 2025-11-18 05:33:27 UTC
+
