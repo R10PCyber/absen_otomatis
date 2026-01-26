@@ -766,3 +766,17 @@ Jenis absen: Tidak ada absen saat ini
 ----------------------------------------
 Selesai pada: 2026-01-26 05:47:46 UTC
 
+=== Absen Tanggal 2026-01-26 09:48:19 ===
+/home/runner/work/absen_otomatis/absen_otomatis/absen.py:12: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  now_utc = datetime.utcnow()
+=== Menjalankan script absen otomatis ===
+Waktu sekarang (WIB): 2026-01-26 16:48:19
+Hari: Monday
+Username: 199511102025051001
+----------------------------------------
+Jenis absen: Tidak ada absen saat ini
+⏸️ Tidak perlu absen sekarang.
+=== Selesai ===
+----------------------------------------
+Selesai pada: 2026-01-26 09:48:19 UTC
+
